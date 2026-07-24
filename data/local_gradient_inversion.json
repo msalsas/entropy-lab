@@ -1,0 +1,45 @@
+{
+  "description": "Accuracy on degenerate vs clean pairs, original vs entropy-literate prompt",
+  "conditions": [
+    "cross/clean",
+    "cross/degenerate",
+    "self/clean",
+    "self/degenerate"
+  ],
+  "original": {
+    "cross/clean": {
+      "n": 39,
+      "acc": 0.64
+    },
+    "cross/degenerate": {
+      "n": 9,
+      "acc": 0.11
+    },
+    "self/clean": {
+      "n": 37,
+      "acc": 0.43
+    },
+    "self/degenerate": {
+      "n": 6,
+      "acc": 1.0
+    }
+  },
+  "literate": {
+    "cross/clean": {
+      "n": 39,
+      "acc": 0.64
+    },
+    "cross/degenerate": {
+      "n": 9,
+      "acc": 0.56
+    },
+    "self/clean": {
+      "n": 37,
+      "acc": 0.51
+    },
+    "self/degenerate": {
+      "n": 8,
+      "acc": 0.5
+    }
+  }
+}

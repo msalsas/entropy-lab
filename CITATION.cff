@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Entropy Self-Estimation Lab"
+abstract: >-
+  An end-to-end experiment testing whether language models can estimate
+  the true entropy of their own sampling distribution beyond what is
+  inferable from visible text. Includes absolute and pairwise comparative
+  judgment paradigms, local transformers/GGUF engines, a remote
+  OpenAI-compatible engine (LM Studio), and a web interface.
+authors:
+  - family-names: "Entropy Self-Estimation Lab"
+    given-names: "Contributors"
+license: MIT
+repository-code: "https://github.com/msalsas/entropy-lab"
+keywords:
+  - large language models
+  - introspection
+  - sampling entropy
+  - verbalized uncertainty
+  - metacognition

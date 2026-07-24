@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entropy Self-Estimation Lab</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Entropy Self-Estimation Lab</h1>
+    <p class="subtitle">
+      Can a model estimate the true entropy of its own sampling distribution?
+      Model A: <strong id="label-a">Qwen2.5-0.5B</strong> · Model B: <strong id="label-b">SmolLM2-360M</strong>
+      <span id="engine-badge" class="engine-badge" hidden></span>
+    </p>
+  </header>
+
+  <main>
+    <aside id="controls">
+      <h2>Variables</h2>
+
+      <section>
+        <h3>Generator</h3>
+        <label><input type="checkbox" id="gen-a" checked> Model A (<span id="gen-label-a">Qwen</span>)</label>
+        <label><input type="checkbox" id="gen-b" checked> Model B (<span id="gen-label-b">SmolLM</span>)</label>
+      </section>
+
+      <section>
+        <h3>Estimator relation</h3>
+        <label><input type="checkbox" id="rel-self" checked> self (estimates itself)</label>
+        <label><input type="checkbox" id="rel-cross" checked> cross (estimates the other)</label>
+      </section>
+
+      <section>
+        <h3>Timing</h3>
+        <label><input type="checkbox" id="tim-pre" checked> pre (before generating)</label>
+        <label><input type="checkbox" id="tim-post" checked> post (answer text visible)</label>
+      </section>
+
+      <section>
+        <h3>Hidden temperature</h3>
+        <div class="row">
+          <label>min <input type="number" id="temp-min" value="0.6" step="0.1" min="0.1" max="2"></label>
+          <label>max <input type="number" id="temp-max" value="1.2" step="0.1" min="0.1" max="2"></label>
+        </div>
+        <small>Randomized per trial; never disclosed to the estimator.</small>
+      </section>
+
+      <section>
+        <h3>Repetitions</h3>
+        <input type="number" id="reps" value="1" min="1" max="5">
+      </section>
+
+      <section>
+        <h3>Questions</h3>
+        <label><input type="radio" name="qset" id="qset-selected" checked> Selected divergent set</label>
+        <label><input type="radio" name="qset" id="qset-all"> Full pool</label>
+      </section>
+
+      <section>
+        <h3>Identity</h3>
+        <label><input type="checkbox" id="reveal-identity"> Reveal which model generates</label>
+      </section>
+
+      <button id="run-btn">Run experiment</button>
+      <div id="progress" class="hidden">
+        <div class="bar"><div id="progress-fill"></div></div>
+        <small id="progress-text"></small>
+      </div>
+      <div id="demo-notice" class="hidden">
+        Demo mode: no backend detected. Showing results from a validation run.
+      </div>
+    </aside>
+
+    <section id="results">
+      <div class="panel">
+        <h2>Verbalized estimate vs. true entropy</h2>
+        <p class="hint">Each point is a trial. If a model detects its own entropy,
+        <em>self</em> points cluster around an increasing trend (high r); if it
+        confabulates, the cloud shows no correlation. The <em>cross</em> condition
+        is the baseline with the same textual information.</p>
+        <canvas id="scatter"></canvas>
+      </div>
+
+      <div class="panel">
+        <h2>Correlation by condition</h2>
+        <p class="hint">Pearson's r between the estimate (0-10) and true entropy (nats),
+        pooling both generators. The "per question" series aggregates each question
+        to a single point to avoid pseudoreplication.</p>
+        <canvas id="bars"></canvas>
+        <p id="comparisons" class="hint"></p>
+      </div>
+
+      <div class="panel">
+        <h2>Comparative judgment: which answer was more unpredictable?</h2>
+        <p class="hint">The judge sees two answers to the same question (one at low and one
+        at high temperature, randomized order) and must pick the more unpredictable one.
+        The correct answer is objective: the one with higher true entropy.
+        The line marks chance (50%).</p>
+        <canvas id="pairwise-bars"></canvas>
+        <p id="pairwise-detail" class="hint"></p>
+        <h3 style="margin-top:1rem">Gradient-inversion attack</h3>
+        <p class="hint">Large entropy gaps are produced by degenerate high-temperature text.
+        With the original prompt ("unpredictable word choices"), cross judges read broken
+        text as defective, not unpredictable (11%). With an entropy-literate prompt
+        explaining that broken text is the signature of maximum randomness, the failure
+        mostly vanishes (56%): the inversion was conceptual, not perceptual. The 100%
+        self score on degenerate pairs also collapses (50%): another surface heuristic.</p>
+        <canvas id="gradient-bars"></canvas>
+      </div>
+
+      <div class="panel">
+        <h2>Trials</h2>
+        <table id="trials-table">
+          <thead>
+            <tr>
+              <th>Question</th><th>Gen.</th><th>Condition</th><th>T (hidden)</th>
+              <th>True H</th><th>Estimate</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
