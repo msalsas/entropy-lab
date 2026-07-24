@@ -164,7 +164,7 @@ LAB_TEMP_LOW=0.2              # confident frontier models need wide
 LAB_TEMP_HIGH=2.0             # temperature extremes to move entropy
 ```
 
-Coverage is model- and provider-dependent. A 2025 analysis of
+Coverage is model- and provider-dependent. A 2026 analysis of
 OpenRouter endpoints found logprobs returned on roughly a quarter of
 them, and some providers cap `top_logprobs` (5 instead of 20, for
 example), so verify your pair with a single API call before a run and
