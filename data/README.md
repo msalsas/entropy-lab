@@ -12,12 +12,11 @@ the corresponding JSON.
 | `local_3b_pairwise.json` | Qwen2.5-3B / SmolLM2-1.7B (local GGUF, exact entropy) | pairwise | 96 comparative judgments |
 | `local_gradient_inversion.json` | 3B pair | re-judging attack | original vs entropy-literate judgments on clean/degenerate pairs |
 | `remote_lmstudio_8b_absolute.json` | Hermes-3-8B / Mistral-Nemo-12B (LM Studio, top-k) | absolute | 192 trials, full pool |
-| `remote_lmstudio_8b_pairwise.json` | same | pairwise | temps 0.2/2.0 |
+| `remote_lmstudio_8b_pairwise.json` | same | pairwise | 192 judgments, temps 0.2/2.0 |
 | `remote_openrouter_70b_pairwise.json` | Llama-3.3-70B / Ling-2.6-1T (OpenRouter, top-k) | pairwise | 96 judgments, temps 0.2/2.0 |
 
-Remote runs (LM Studio 8-12B, OpenRouter 70B/1T) are added here as they
-are produced, following the naming pattern
-`remote_<backend>_<scale>_<paradigm>.json`.
+New remote runs are added here as they are produced, following the
+naming pattern `remote_<backend>_<scale>_<paradigm>.json`.
 
 ## Trial record schema (pairwise)
 
